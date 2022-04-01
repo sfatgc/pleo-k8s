@@ -1,0 +1,19 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: app-tinjis-svc
+  labels:
+    app.kubernetes.io/name: app-tinjis-svc
+    app.kubernetes.io/part-of: PleoStack
+spec:
+  type: ClusterIP
+  # clusterIP: None
+  ports:
+  - name: http
+    port: 8000
+    targetPort: 8000
+    protocol: TCP
+  selector:
+    app.kubernetes.io/name: app-tinjis
+    app.kubernetes.io/part-of: PleoStack

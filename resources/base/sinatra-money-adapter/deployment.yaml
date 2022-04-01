@@ -1,0 +1,65 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-sinatra-money-adapter
+  labels:
+    app.kubernetes.io/name: app-sinatra-money-adapter
+    app.kubernetes.io/part-of: PleoStack
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: app-sinatra-money-adapter
+      app.kubernetes.io/part-of: PleoStack
+  replicas: 1
+  revisionHistoryLimit: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: app-sinatra-money-adapter
+        app.kubernetes.io/part-of: PleoStack
+    spec:
+      serviceAccountName: app-sinatra-money-adapter
+      containers:
+        - name: application
+          image: SINATRA_MONEY_ADAPTER_IMAGE_PLACEHOLDER:latest
+          command:
+            - "ruby"
+            - "sinatra-money-adapter.rb"
+            - "-p 8000"
+          resources:
+            requests:
+              memory: 128Mi
+              cpu: 100m
+            limits:
+              memory: 256Mi
+              cpu: "500m"
+          envFrom:
+            - configMapRef:
+                name: app-sinatra-money-adapter-cm
+          livenessProbe:
+            tcpSocket:
+              port: 8000
+            periodSeconds: 30
+            failureThreshold: 4
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            periodSeconds: 5
+            failureThreshold: 2
+          startupProbe:
+            tcpSocket:
+              port: 8000
+            initialDelaySeconds: 5
+            timeoutSeconds: 3
+            periodSeconds: 15
+            failureThreshold: 5
+          ports:
+            - containerPort: 8000
+              protocol: TCP
+

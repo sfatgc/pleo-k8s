@@ -1,0 +1,23 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: pleo-stack
+images:
+  - name:    TINJIS_IMAGE_PLACEHOLDER
+    newName: sfatgc/tinjis
+    newTag:  v.1.0.1
+  - name:    SINATRA_MONEY_ADAPTER_IMAGE_PLACEHOLDER
+    newName: sfatgc/sinatra-money-adapter
+    newTag:  v.2.13.47
+
+resources:
+  - namespace.yaml
+  - ../../resources/base/tinjis
+  - ../../resources/base/sinatra-money-adapter
+
+configMapGenerator:
+  - name: app-tinjis-cm
+    behavior: merge
+    literals:
+      - "PAYMENT_PROVIDER_ENDPOINT=http://sinatra-money-adapter-svc:9000"

@@ -1,0 +1,40 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: pleo-stack
+images:
+  - name:    TINJIS_IMAGE_PLACEHOLDER
+    newName: sfatgc/tinjis
+    newTag:  feature-ci-14
+  - name:    SINATRA_MONEY_ADAPTER_IMAGE_PLACEHOLDER
+    newName: sfatgc/sinatra-money-adapter
+    newTag:  main-latest
+
+resources:
+  - namespace.yaml
+  - ../../resources/base/tinjis
+  - ../../resources/base/sinatra-money-adapter
+
+patches:
+  - patch: |-
+      - op: replace
+        path: /spec/strategy
+        value:
+          type: Recreate
+    target:
+      group: apps
+      version: v1
+      kind: Deployment
+      name: app-tinjis
+
+configMapGenerator:
+  - name: app-tinjis-cm
+    behavior: merge
+    literals:
+      - "PAYMENT_PROVIDER_ENDPOINT=http://app-sinatra-money-adapter-svc.pleo-stack.svc:8000"
+  - name: app-sinatra-money-adapter-cm
+    behavior: merge
+    literals:
+      - "APP_ENV=production"
+      - "SINATRA_MONEY_COEFFICIENT=5"

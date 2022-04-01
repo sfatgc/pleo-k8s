@@ -1,0 +1,62 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-tinjis
+  labels:
+    app.kubernetes.io/name: app-tinjis
+    app.kubernetes.io/part-of: PleoStack
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: app-tinjis
+      app.kubernetes.io/part-of: PleoStack
+  replicas: 1
+  revisionHistoryLimit: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: app-tinjis
+        app.kubernetes.io/part-of: PleoStack
+    spec:
+      serviceAccountName: app-tinjis
+      containers:
+        - name: application
+          image: TINJIS_IMAGE_PLACEHOLDER:latest
+          resources:
+            requests:
+              memory: 500Mi
+              cpu: 250m
+            limits:
+              memory: 1500Mi
+              cpu: 1500m
+          envFrom:
+            - configMapRef:
+                name: app-tinjis-cm
+          livenessProbe:
+            tcpSocket:
+              port: 8000
+            periodSeconds: 30
+            failureThreshold: 4
+          readinessProbe:
+            httpGet:
+              path: /rest/health
+              port: 8000
+            periodSeconds: 5
+            failureThreshold: 2
+          startupProbe:
+            httpGet:
+              path: /rest/health
+              port: 8000
+            initialDelaySeconds: 420
+            timeoutSeconds: 3
+            periodSeconds: 15
+            failureThreshold: 5
+          ports:
+            - containerPort: 8000
+              protocol: TCP
+

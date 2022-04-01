@@ -1,0 +1,29 @@
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: app-tinjis
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: app-tinjis
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - ""
+  verbs:
+  - ""
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: app-tinjis
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: app-tinjis
+subjects:
+- kind: ServiceAccount
+  name: app-tinjis
