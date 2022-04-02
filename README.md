@@ -67,7 +67,7 @@ Randomness can be configured via `SINATRA_MONEY_COEFFICIENT` environment variabl
 
 ### Production delivery setup, and deploy permissions
 
-Fo production delivery we can use Git-ops approach, utilizing tools like ArgoCD, or FluxCD.
+Fo production delivery we can use Git-ops approach, utilizing tools like [ArgoCD](https://argo-cd.readthedocs.io/en/stable/), or [FluxCD](https://fluxcd.io/).
 
 In ArgoCD we can disable autosync option for Applications, and setup RBAC so one person can sync only tinjis Application, and other person can sync only sinatra-money-adapter Application, for example.
 
