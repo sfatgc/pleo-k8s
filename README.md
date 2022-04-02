@@ -78,3 +78,8 @@ So the delivery workflow can look like this:
 4. The person with permission to deploy sinatra-money-adapter app syncs it's ArgoCD Application by pressing "Sync" in the web-interface, or by using proper argo CLI call;
 5. ArgoCD fetches `pleo-k8s` repository, renders `environments/production` directory with Kustomize, and applies rendered manifests;
 6. Kubernetes performs Deployment update with specified deployment strategy.
+
+### Prevent all services, but tinjis to communicate with sinatra-money-adapter
+
+For this we can utilize [Kubernetes NetworkPolicies capability](https://kubernetes.io/docs/concepts/services-networking/network-policies/), implementing it with proper CNI plugin, like [Calico](https://projectcalico.docs.tigera.io/about/about-calico).
+
