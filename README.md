@@ -71,7 +71,7 @@ Fo production delivery we can use Git-ops approach, utilizing tools like [ArgoCD
 
 In ArgoCD we can disable autosync option for Applications, and setup RBAC so one person can sync only tinjis Application, and other person can sync only sinatra-money-adapter Application, for example.
 
-So the delivery workflow looks like this:
+So the delivery workflow can look like this:
 1. Developer releases new version of `sinatra-money-adapter` app, which is built by CI, and the docker-image published into docker-registry with proper tag;
 2. Application then tested, and approved as production-ready by QA engineer;
 3. Developer (or QA engineer?) modifies `environments/production/kustomization.yaml` file in `pleo-k8s` git repository, updating applications's image tag;
