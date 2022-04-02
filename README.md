@@ -41,3 +41,25 @@ Directory structure:
             ├── rbac.yaml
             └── service.yaml
 ```
+
+
+## Applications
+
+### [sfatgc/tinjis](https://github.com/sfatgc/tinjis)
+
+Branch [feature/ci](https://github.com/sfatgc/tinjis/tree/feature/ci) contains simple CircleCI pipeline to build and publish docker image into the (hub.docker.com)[hub.docker.com] registry.
+
+Dockerfile contains small changes to avoid application run as root user.
+
+### [sfatgc/sinatra-money-adapter](https://github.com/sfatgc/sinatra-money-adapter)
+
+Probably simpliest possible implementation of the REST-like API to satisfy [sfatgc/tinjis](https://github.com/sfatgc/tinjis) application needs.
+
+Implemented in [Ruby](https://www.ruby-lang.org/en/) language, using [Sinatra](http://sinatrarb.com/) framework.
+
+Handles `GET /health` requests to implement health check entrypoint for Kubernetes.
+
+Handles `POST /` requests to implement payment provider entrypoint for [sfatgc/tinjis](https://github.com/sfatgc/tinjis) application. Randomly returns JSON response with true or false value of the `result` field.
+
+Randomness can be configured via `SINATRA_MONEY_COEFFICIENT` environment variable configurable per deployment environment inproper [kustomization file](environments/minikube/kustomization.yaml#L40) (See project's [README.md](https://github.com/sfatgc/sinatra-money-adapter/blob/main/README.md) for details)
+
