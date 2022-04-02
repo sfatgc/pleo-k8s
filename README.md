@@ -6,7 +6,7 @@ Tested only on minikube & docker-desktop for Mac installations.
 
 To apply on k8s cluster, please run: `kubectl apply -k environments/minikube`
 
-To ckeck:
+To ckeck on minikube/docker-desktop:
 ```
 kubectl port-forward -n pleo-stack service/app-tinjis-svc 8000
 curl -v -X POST -d "{}" http://localhost:8000/rest/v1/invoices/pay
@@ -47,9 +47,9 @@ Directory structure:
 
 ### [sfatgc/tinjis](https://github.com/sfatgc/tinjis)
 
-Branch [feature/ci](https://github.com/sfatgc/tinjis/tree/feature/ci) contains simple CircleCI pipeline to build and publish docker image into the (hub.docker.com)[hub.docker.com] registry.
+Branch [feature/ci](https://github.com/sfatgc/tinjis/tree/feature/ci) contains simple CircleCI pipeline to build and publish docker image into the [hub.docker.com](hub.docker.com) registry.
 
-Dockerfile contains small changes to avoid application run as root user.
+Dockerfile contains small changes to avoid application to run as root user.
 
 ### [sfatgc/sinatra-money-adapter](https://github.com/sfatgc/sinatra-money-adapter)
 
@@ -61,5 +61,5 @@ Handles `GET /health` requests to implement health check entrypoint for Kubernet
 
 Handles `POST /` requests to implement payment provider entrypoint for [sfatgc/tinjis](https://github.com/sfatgc/tinjis) application. Randomly returns JSON response with true or false value of the `result` field.
 
-Randomness can be configured via `SINATRA_MONEY_COEFFICIENT` environment variable configurable per deployment environment inproper [kustomization file](environments/minikube/kustomization.yaml#L40) (See project's [README.md](https://github.com/sfatgc/sinatra-money-adapter/blob/main/README.md) for details)
+Randomness can be configured via `SINATRA_MONEY_COEFFICIENT` environment variable configurable per deployment environment in the proper [kustomization file](environments/minikube/kustomization.yaml#L40) (See project's [README.md](https://github.com/sfatgc/sinatra-money-adapter/blob/main/README.md) for details)
 
